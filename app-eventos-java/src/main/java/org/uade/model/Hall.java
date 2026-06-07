@@ -7,7 +7,6 @@ public class Hall {
     private String hallName;
     private String hallType;
     private int maxCapacity;
-    private ArrayList<Attendee> confirmedAttendees;
     private Boolean isAvailable;
     private double price;
 
@@ -19,7 +18,6 @@ public class Hall {
         this.maxCapacity = maxCapacity;
         this.isAvailable = isAvailable;
         this.price = price;
-        this.confirmedAttendees = new ArrayList<>();
     }
 
     public int getId() {
@@ -48,14 +46,5 @@ public class Hall {
 
     public void setAvailable(Boolean available) {
         this.isAvailable = available;
-    }
-
-    public Boolean addAttendee(Attendee attendee) {
-        if(this.confirmedAttendees.size() < this.maxCapacity) {
-            this.confirmedAttendees.add(attendee);
-            return true;
-        }
-
-        return false;
     }
 }
