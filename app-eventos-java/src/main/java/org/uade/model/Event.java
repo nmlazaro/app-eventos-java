@@ -1,8 +1,9 @@
 package org.uade.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Event {
+public class Event implements Comparable<Event>{
     private final int id;
     private static int nextId = 0;
     private String name;
@@ -87,6 +88,11 @@ public class Event {
         }
 
         return false;
+    }
+
+    @Override
+    public int compareTo(Event event) {
+        return this.date.compareTo(event.date);
     }
 
     public double getTotalPrice(int hours) {
