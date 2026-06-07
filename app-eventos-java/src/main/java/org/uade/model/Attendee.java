@@ -1,7 +1,7 @@
 package org.uade.model;
 
 public class Attendee {
-    private int id;
+    private final int id;
     private String name;
     private String email;
     private String phone;
