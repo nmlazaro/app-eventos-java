@@ -1,35 +1,15 @@
 package org.uade.model;
 
-import java.util.ArrayList;
-
-public class Hall {
-    private final int id;
-    private String hallName;
+public class Hall extends Resource {
     private String hallType;
     private int maxCapacity;
-    private Boolean isAvailable;
     private double price;
 
-
-    public Hall(int id, String hallName, String hallType, int maxCapacity, Boolean isAvailable, double price) {
-        this.id = id;
-        this.hallName = hallName;
+    public Hall(int id, String name, String hallType, int maxCapacity, boolean isAvailable, double price) {
+        super(id, name, isAvailable);
         this.hallType = hallType;
         this.maxCapacity = maxCapacity;
-        this.isAvailable = isAvailable;
         this.price = price;
-    }
-
-    public int getId() {
-        return this.id;
-    }
-
-    public String getHallName() {
-        return this.hallName;
-    }
-
-    public Boolean getAvailable() {
-        return this.isAvailable;
     }
 
     public String getHallType() {
@@ -44,7 +24,22 @@ public class Hall {
         return this.price;
     }
 
-    public void setAvailable(Boolean available) {
-        this.isAvailable = available;
+    public void setHallType(String hallType) {
+        if (hallType != null) {
+            this.hallType = hallType;
+        }
+    }
+
+    public void setMaxCapacity(int maxCapacity) {
+        this.maxCapacity = maxCapacity;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    @Override
+    public double getEffectivePrice(int hours) {
+        return this.price;
     }
 }

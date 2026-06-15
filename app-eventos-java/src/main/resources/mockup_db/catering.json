@@ -1,0 +1,23 @@
+[
+  {
+    "id": 1,
+    "name": "Coffee Break Basico",
+    "description": "Cafe, te, agua y facturas",
+    "price": 15000.0,
+    "isAvailable": true
+  },
+  {
+    "id": 2,
+    "name": "Almuerzo Ejecutivo",
+    "description": "Entrada, plato principal y postre",
+    "price": 45000.0,
+    "isAvailable": true
+  },
+  {
+    "id": 3,
+    "name": "Cocktail",
+    "description": "Bocaditos frios y calientes con bebida",
+    "price": 35000.0,
+    "isAvailable": true
+  }
+]

@@ -1,0 +1,30 @@
+[
+  {
+    "id": 1,
+    "name": "Juan Perez",
+    "email": "juan.perez@mail.com",
+    "phone": "1122334455",
+    "active": true
+  },
+  {
+    "id": 2,
+    "name": "Maria Garcia",
+    "email": "maria.garcia@mail.com",
+    "phone": "1166778899",
+    "active": true
+  },
+  {
+    "id": 3,
+    "name": "Lucas Fernandez",
+    "email": "lucas.fernandez@mail.com",
+    "phone": "1133557799",
+    "active": true
+  },
+  {
+    "id": 4,
+    "name": "Sofia Lopez",
+    "email": "sofia.lopez@mail.com",
+    "phone": "1144668800",
+    "active": true
+  }
+]

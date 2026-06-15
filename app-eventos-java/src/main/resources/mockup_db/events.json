@@ -1,0 +1,61 @@
+[
+  {
+    "name": "Conferencia POO 2026",
+    "description": "Charla sobre programacion orientada a objetos",
+    "active": true,
+    "date": "15-07-2026",
+    "location": "UADE Monserrat",
+    "hallId": 1,
+    "attendeeIds": [],
+    "cateringIds": [],
+    "equipmentIds": []
+  },
+  {
+    "name": "Reunion planificacion Q3",
+    "description": "Definicion de roadmap del proximo trimestre",
+    "active": true,
+    "date": "30-06-2026",
+    "location": "UADE Monserrat",
+    "hallId": 2,
+    "attendeeIds": [],
+    "cateringIds": [],
+    "equipmentIds": []
+  },
+  {
+    "name": "Workshop de Java",
+    "description": "Sesion practica de lenguajes JVM",
+    "active": true,
+    "date": "10-08-2026",
+    "location": "UADE Belgrano",
+    "hallId": 3,
+    "attendeeIds": [],
+    "cateringIds": [],
+    "equipmentIds": []
+  },
+  {
+    "name": "Evento de prueba inactivo",
+    "description": "Este evento esta desactivado y no deberia mostrarse",
+    "active": false,
+    "date": "01-06-2026",
+    "location": "UADE",
+    "hallId": 3,
+    "attendeeIds": [],
+    "cateringIds": [],
+    "equipmentIds": []
+  },
+  {
+    "name": "test",
+    "description": "123",
+    "active": false,
+    "date": "01-10-2026",
+    "location": "Madagascar",
+    "hallId": 1,
+    "attendeeIds": [
+      4
+    ],
+    "cateringIds": [],
+    "equipmentIds": [
+      1
+    ]
+  }
+]

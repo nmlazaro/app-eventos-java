@@ -1,40 +1,23 @@
 package org.uade.model;
 
-public class Equipment {
-    private final int id;
-    private String name;
-    private Boolean isAvailable;
+public class Equipment extends Resource {
     private double hourPrice;
 
-    public Equipment(int id, String name, Boolean isAvailable, double price) {
-        this.id = id;
-        this.name = name;
-        this.isAvailable = isAvailable;
-        this.hourPrice = price;
-    }
-
-    public int getId() {
-        return this.id;
-    }
-
-    public String getName() {
-        return this.name;
-    }
-
-    public Boolean getIsAvailable() {
-        return this.isAvailable;
+    public Equipment(int id, String name, boolean isAvailable, double hourPrice) {
+        super(id, name, isAvailable);
+        this.hourPrice = hourPrice;
     }
 
     public double getHourPrice() {
         return this.hourPrice;
     }
 
-    public double getTotalPrice(int hours) {
+    public void setHourPrice(double hourPrice) {
+        this.hourPrice = hourPrice;
+    }
+
+    @Override
+    public double getEffectivePrice(int hours) {
         return this.hourPrice * hours;
     }
-
-    public void setAvailable(Boolean available) {
-        this.isAvailable = available;
-    }
-
 }

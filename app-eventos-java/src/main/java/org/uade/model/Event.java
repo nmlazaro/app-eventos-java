@@ -1,22 +1,30 @@
 package org.uade.model;
 
-import java.io.Serializable;
+import org.uade.exception.DuplicateResourceException;
+import org.uade.exception.HallCapacityExceededException;
+import org.uade.exception.ResourceLimitExceededException;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class Event implements Comparable<Event>{
+    public static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+    public static final int MAX_CATERING_PER_EVENT = 2;
+
     private final int id;
     private static int nextId = 0;
     private String name;
     private String description;
     private boolean active;
-    private String date;
+    private LocalDate date;
     private String location;
     private ArrayList<Catering> cateringList;
     private ArrayList<Equipment> equipmentList;
     private ArrayList<Attendee> confirmedAttendees;
     private Hall hall;
 
-    public Event(String name, String description, Boolean active, String date, String location, Hall hall) {
+    public Event(String name, String description, Boolean active, LocalDate date, String location, Hall hall) {
         this.id = nextId++;
         this.name = name;
         this.description = description;
@@ -30,64 +38,43 @@ public class Event implements Comparable<Event>{
 
     }
 
-    public Boolean addAttendee(Attendee attendee) {
-        if(this.confirmedAttendees.size() < this.hall.getMaxCapacity()) {
-            this.confirmedAttendees.add(attendee);
-            return true;
+    public void addAttendee(Attendee attendee) throws DuplicateResourceException, HallCapacityExceededException {
+        if (this.confirmedAttendees.contains(attendee)) {
+            throw new DuplicateResourceException("El asistente ya esta inscripto en el evento");
         }
-
-        return false;
+        if (this.confirmedAttendees.size() >= this.hall.getMaxCapacity()) {
+            throw new HallCapacityExceededException("El salon llego a su capacidad maxima (" + this.hall.getMaxCapacity() + ")");
+        }
+        this.confirmedAttendees.add(attendee);
     }
 
-    public Boolean removeAttendee(Attendee attendee) {
-        if(this.confirmedAttendees.contains(attendee)) {
-            this.confirmedAttendees.remove(attendee);
-
-            return true;
-        }
-
-        return false;
+    public void removeAttendee(Attendee attendee) {
+        this.confirmedAttendees.remove(attendee);
     }
 
-    public Boolean addCatering(Catering catering) {
-        // Puse 2 como logica de negocio para el limite de caterings por evento
-        if(this.cateringList.size() <= 2 && !this.cateringList.contains(catering)) {
-            this.cateringList.add(catering);
-
-            return true;
+    public void addCatering(Catering catering) throws DuplicateResourceException, ResourceLimitExceededException {
+        if (this.cateringList.contains(catering)) {
+            throw new DuplicateResourceException("El catering ya esta agregado al evento");
         }
-
-        return false;
+        if (this.cateringList.size() >= MAX_CATERING_PER_EVENT) {
+            throw new ResourceLimitExceededException("El limite es de " + MAX_CATERING_PER_EVENT + " caterings por evento");
+        }
+        this.cateringList.add(catering);
     }
 
-    public Boolean removeCatering(Catering catering) {
-        if(this.cateringList.contains(catering)) {
-            this.cateringList.remove(catering);
-
-            return true;
-        }
-
-        return false;
+    public void removeCatering(Catering catering) {
+        this.cateringList.remove(catering);
     }
 
-    public Boolean addEquipment(Equipment equipment) {
-        if(!this.equipmentList.contains(equipment)) {
-            this.equipmentList.add(equipment);
-
-            return true;
+    public void addEquipment(Equipment equipment) throws DuplicateResourceException {
+        if (this.equipmentList.contains(equipment)) {
+            throw new DuplicateResourceException("El equipamiento ya esta agregado al evento");
         }
-
-        return false;
+        this.equipmentList.add(equipment);
     }
 
-    public Boolean removeEquipment(Equipment equipment) {
-        if(this.equipmentList.contains(equipment)) {
-            this.equipmentList.remove(equipment);
-
-            return true;
-        }
-
-        return false;
+    public void removeEquipment(Equipment equipment) {
+        this.equipmentList.remove(equipment);
     }
 
     @Override
@@ -96,14 +83,14 @@ public class Event implements Comparable<Event>{
     }
 
     public double getTotalPrice(int hours) {
-        double total = this.hall.getPrice();
+        double total = this.hall.getEffectivePrice(hours);
 
         for (Catering catering : cateringList ) {
-            total += catering.getPrice();
+            total += catering.getEffectivePrice(hours);
         }
 
         for (Equipment equipment : equipmentList ) {
-            total += equipment.getTotalPrice(hours);
+            total += equipment.getEffectivePrice(hours);
         }
 
         return total;
@@ -121,20 +108,44 @@ public class Event implements Comparable<Event>{
         return this.description;
     }
 
-    public String getDate() {
+    public LocalDate getDate() {
         return this.date;
     }
 
+    public String getFormattedDate() {
+        return this.date.format(DATE_FORMATTER);
+    }
+
     public String getLocation() {
-        return this.location + " " + this.hall.getHallName();
+        return this.location;
+    }
+
+    public String getFullLocation() {
+        return this.location + " - " + this.hall.getName();
     }
 
     public Boolean getEventIsActive() {
         return this.active;
     }
 
+    public Hall getHall() {
+        return this.hall;
+    }
+
     public String getHallName() {
-        return this.hall.getHallName();
+        return this.hall.getName();
+    }
+
+    public ArrayList<Attendee> getConfirmedAttendees() {
+        return this.confirmedAttendees;
+    }
+
+    public ArrayList<Catering> getCateringList() {
+        return this.cateringList;
+    }
+
+    public ArrayList<Equipment> getEquipmentList() {
+        return this.equipmentList;
     }
 
     public void setName(String name) {
@@ -162,7 +173,7 @@ public class Event implements Comparable<Event>{
 
     }
 
-    public void setDate(String date) {
+    public void setDate(LocalDate date) {
         if (date != null) {
             this.date = date;
         }

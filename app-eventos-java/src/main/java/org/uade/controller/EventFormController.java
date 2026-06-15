@@ -1,7 +1,10 @@
 package org.uade.controller;
 
+import org.uade.exception.ValidationException;
 import org.uade.model.Event;
 import org.uade.model.Hall;
+
+import java.time.LocalDate;
 
 public class EventFormController {
     private EventMainMenuController eventMainMenuController;
@@ -10,38 +13,51 @@ public class EventFormController {
         this.eventMainMenuController = eventMainMenuController;
     }
 
-    public Boolean createEvent(String name, String description, Boolean active, String date, String location, Hall hall) {
-
-        if (name != null && description != null && active != null && location != null) {
-            Event event = new Event(name, description, active, date, location, hall);
-            eventMainMenuController.addEvent(event);
-
-            return true;
-        }
-
-        return false;
+    public void createEvent(String name, String description, Boolean active, LocalDate date, String location, Hall hall) throws ValidationException {
+        validate(name, description, active, date, location, hall);
+        Event event = new Event(name, description, active, date, location, hall);
+        eventMainMenuController.addEvent(event);
     }
 
-    public Boolean updateEvent(Event event, String name, String description, String date, String location, Hall hall) {
-        if (event != null) {
-            event.setName(name);
-            event.setDescription(description);
-            event.setDate(date);
-            event.setLocation(location);
-            event.setHall(hall);
-
-            return true;
+    public void updateEvent(Event event, String name, String description, Boolean active, LocalDate date, String location, Hall hall) throws ValidationException {
+        if (event == null) {
+            throw new ValidationException("El evento a editar no puede ser nulo");
         }
-
-        return false;
+        validate(name, description, active, date, location, hall);
+        event.setName(name);
+        event.setDescription(description);
+        event.setActive(active);
+        event.setDate(date);
+        event.setLocation(location);
+        event.setHall(hall);
+        eventMainMenuController.notifyChange();
     }
 
-    public Boolean deleteEvent(Event event) {
+    public void deleteEvent(Event event) {
         if (event != null) {
             event.setActive(false);
-            return true;
+            eventMainMenuController.notifyChange();
         }
+    }
 
-        return false;
+    private void validate(String name, String description, Boolean active, LocalDate date, String location, Hall hall) throws ValidationException {
+        if (name == null || name.isBlank()) {
+            throw new ValidationException("El nombre del evento no puede estar vacio");
+        }
+        if (description == null) {
+            throw new ValidationException("La descripcion no puede ser nula");
+        }
+        if (active == null) {
+            throw new ValidationException("El estado activo no puede ser nulo");
+        }
+        if (date == null) {
+            throw new ValidationException("La fecha no puede ser nula");
+        }
+        if (location == null || location.isBlank()) {
+            throw new ValidationException("La ubicacion no puede estar vacia");
+        }
+        if (hall == null) {
+            throw new ValidationException("Debe seleccionar un salon");
+        }
     }
 }

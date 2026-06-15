@@ -1,26 +1,13 @@
 package org.uade.model;
 
-public class Catering {
-    private final int id;
-    private String menuName;
+public class Catering extends Resource {
     private String description;
     private double price;
-    private Boolean isAvailable;
 
-    public Catering(int id, String menuName, String description, double price,  Boolean isAvailable) {
-        this.id = id;
-        this.menuName = menuName;
+    public Catering(int id, String name, String description, double price, boolean isAvailable) {
+        super(id, name, isAvailable);
         this.description = description;
         this.price = price;
-        this.isAvailable = isAvailable;
-    }
-
-    public int getId() {
-        return this.id;
-    }
-
-    public String getMenuName() {
-        return this.menuName;
     }
 
     public String getDescription() {
@@ -31,10 +18,6 @@ public class Catering {
         return this.price;
     }
 
-    public void setMenuName(String menuName) {
-        this.menuName = menuName;
-    }
-
     public void setDescription(String description) {
         this.description = description;
     }
@@ -43,8 +26,8 @@ public class Catering {
         this.price = price;
     }
 
-    public void setAvailable(Boolean available) {
-        this.isAvailable = available;
+    @Override
+    public double getEffectivePrice(int hours) {
+        return this.price;
     }
-
 }
